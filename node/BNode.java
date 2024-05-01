@@ -120,7 +120,7 @@ public class BNode {
      */
     private static BNode getMin(BNode bNode) {
         if (!isNodeExist(bNode)) {
-            return getMin(bNode.left);
+            bNode = bNode.left;
         }
         return bNode;
     }
@@ -131,24 +131,90 @@ public class BNode {
      */
     private static BNode getMax(BNode bNode) {
         if (!isNodeExist(bNode.right)) {
-            return getMax(bNode.right);
+            bNode = bNode.right;
         }
         return bNode;
     }
 
 
     private static void removeNodeWithOneOrZeroChild(BNode BNodeToDelete) {
-        if (!isNodeExist(BNodeToDelete)){
+        if (!isNodeExist(BNodeToDelete)) {
             return;
         }
-        if (isNodeExist(BNodeToDelete.right)&&!isNodeExist(BNodeToDelete.left)){
+        if (isNodeExist(BNodeToDelete.right) &&
+                !isNodeExist(BNodeToDelete.left)) {
+            // Если у узла есть только правый потомок,
+            // заменяем удаляемый узел его правым потомком
+            BNodeToDelete = BNodeToDelete.right;
+        } else if (isNodeExist(BNodeToDelete.left) &&
+                !isNodeExist(BNodeToDelete.right)) {
+            // Если у узла есть только левый потомок,
+            // заменяем удаляемый узел его левым потомком
+            BNodeToDelete = BNodeToDelete.left;
+        } else {
+            // Если у узла нет потомков, просто удаляем его
+            BNodeToDelete = null;
         }
-
+/**
+ * private static void removeNodeWithTwoChildren(BNode BNodeToDelete) {
+ *     // Найти преемника (узел с наименьшим значением в правом поддереве)
+ *     BNode successor = getMin(BNodeToDelete.right);
+ *
+ *     // Копировать данные преемника в удаляемый узел
+ *     BNodeToDelete.data = successor.data;
+ *
+ *     // Удалить преемника
+ *     removeNodeWithOneOrZeroChild(successor);
+ * }
+ *
+ * private static BNode getMin(BNode bNode) {
+ *     while (bNode.left != null) {
+ *         bNode = bNode.left;
+ *     }
+ *     return bNode;
+ * }
+ */
     }
 
 
     private static boolean remove(BNode root, int value) {
-
+/**
+ * private static BNode remove(BNode root, int value) {
+ *     if (root == null) {
+ *         return null;
+ *     }
+ *
+ *     if (value < root.data) {
+ *         root.left = remove(root.left, value);
+ *     } else if (value > root.data) {
+ *         root.right = remove(root.right, value);
+ *     } else {
+ *         // Узел найден, выполняем удаление
+ *         if (root.left == null && root.right == null) {
+ *             // У узла нет потомков, просто удаляем его
+ *             root = null;
+ *         } else if (root.right != null) {
+ *             // У узла есть только правый потомок или оба потомка, заменяем удаляемый узел на его преемника
+ *             BNode minNodeForRight = getMin(root.right);
+ *             root.data = minNodeForRight.data;
+ *             // Удаляем преемника из правого поддерева
+ *             root.right = remove(root.right, minNodeForRight.data);
+ *         } else {
+ *             // У узла есть только левый потомок, заменяем удаляемый узел на его левого потомка
+ *             root = root.left;
+ *         }
+ *     }
+ *
+ *     return root;
+ * }
+ *
+ * private static BNode getMin(BNode root) {
+ *     if (root.left != null) {
+ *         return getMin(root.left);
+ *     }
+ *     return root;
+ * }
+ */
         return true;
     }
 }
